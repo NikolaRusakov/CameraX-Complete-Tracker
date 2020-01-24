@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Rational
 import android.util.Size
 import android.view.LayoutInflater
+import android.view.Surface
 import android.view.View
 import android.view.ViewGroup
 import androidx.camera.core.*
@@ -14,6 +15,7 @@ import androidx.lifecycle.MutableLiveData
 import de.crysxd.cameraXTracker.ar.ArOverlayView
 import kotlinx.android.synthetic.main.fragment_camera.*
 import timber.log.Timber
+import java.io.File
 
 @Suppress("unused")
 open class CameraFragment : Fragment() {
@@ -30,7 +32,14 @@ open class CameraFragment : Fragment() {
             }
         }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
+    var flashMode: FlashMode? = null
+    var imageCapture: ImageCapture? = null
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View =
         inflater.inflate(R.layout.fragment_camera, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -65,8 +74,13 @@ open class CameraFragment : Fragment() {
                 CameraX.unbindAll()
 
                 // Create configuration object for the viewfinder use case
-                val previewConfig = onCreatePreivewConfigBuilder().build()
+                val previewConfig = onCreatePreviewConfigBuilder().build()
                 usesCases.add(AutoFitPreviewBuilder.build(previewConfig, preview))
+
+                val imageCaptureConfig = onCreateImageCaptureConfigBuilder().build()
+                val fileName = System.currentTimeMillis().toString()
+                val fileFormat = ".jpg"
+                val imageFile = createTempFile(fileName, fileFormat)
 
                 // Setup image analysis pipeline that computes average pixel luminance in real time
                 if (imageAnalyzer != null) {
@@ -75,6 +89,23 @@ open class CameraFragment : Fragment() {
                         analyzer = imageAnalyzer
                     })
                 }
+
+                usesCases.add(usesCases.size - 1,
+                    ImageCapture(imageCaptureConfig).apply {
+                        takePicture(imageFile, object : ImageCapture.OnImageSavedListener {
+                            override fun onImageSaved(file: File) {
+                                // You may display the image for example using its path file.absolutePath
+                            }
+
+                            override fun onError(
+                                useCaseError: ImageCapture.UseCaseError,
+                                message: String,
+                                cause: Throwable?
+                            ) {
+                                // Display error message
+                            }
+                        })
+                    })
 
                 // Bind use cases to lifecycle
                 CameraX.bindToLifecycle(this, *usesCases.toTypedArray())
@@ -102,8 +133,49 @@ open class CameraFragment : Fragment() {
     }
 
     @Suppress("MemberVisibilityCanBePrivate")
-    protected open fun onCreatePreivewConfigBuilder() = PreviewConfig.Builder().apply {
+    protected open fun onCreatePreviewConfigBuilder() = PreviewConfig.Builder().apply {
         setTargetAspectRatio(Rational(16, 9))
         setTargetResolution(Size(preview.width, preview.height))
     }
+
+    @Suppress("MemberVisibilityCanBePrivate")
+    protected fun onCreateImageCaptureConfigBuilder() = ImageCaptureConfig.Builder().apply {
+        setTargetAspectRatio(Rational(16, 9))
+        setTargetRotation(Surface.ROTATION_0)
+        setTargetResolution(Size(preview.width, preview.height))
+        if (flashMode != null) {
+            setFlashMode(flashMode)
+        }
+//            setCaptureMode(captureMode)
+    }
+//        val captureConfig = ImageCaptureConfig.Builder()
+//            .setTargetAspectRatio()
+//            .setTargetRotation(rotation)
+//            .setTargetResolution(resolution)
+//            .setFlashMode(flashMode)
+//            .setCaptureMode(captureMode)
+//            .build()
+//
+//        val capture = ImageCapture(captureConfig)
+//        cameraCaptureImageButton.setOnClickListener {
+//            // Create temporary file
+//            val fileName = System.currentTimeMillis().toString()
+//            val fileFormat = ".jpg"
+//            val imageFile = createTempFile(fileName, fileFormat)
+//
+//            // Store captured image in the temporary file
+//            capture.takePicture(imageFile, object : ImageCapture.OnImageSavedListener {
+//                override fun onImageSaved(file: File) {
+//                    // You may display the image for example using its path file.absolutePath
+//                }
+//
+//                override fun onError(useCaseError: ImageCapture.UseCaseError, message: String, cause: Throwable?) {
+//                    // Display error message
+//                }
+//            })
+//        }
+//
+//        return capture
+//    }
+
 }

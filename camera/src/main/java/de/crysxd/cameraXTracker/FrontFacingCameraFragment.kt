@@ -10,7 +10,7 @@ class FrontFacingCameraFragment : CameraFragment() {
         setLensFacing(CameraX.LensFacing.FRONT)
     }
 
-    override fun onCreatePreivewConfigBuilder(): PreviewConfig.Builder = super.onCreatePreivewConfigBuilder().apply {
+    override fun onCreatePreviewConfigBuilder(): PreviewConfig.Builder = super.onCreatePreviewConfigBuilder().apply {
         setLensFacing(CameraX.LensFacing.FRONT)
     }
 }
