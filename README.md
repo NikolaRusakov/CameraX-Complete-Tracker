@@ -19,13 +19,13 @@ Add this is app's `build.gralde`
 
     implementation 'com.github.crysxd:CameraX-Object-Tracking:latest-version'
 
-Add a instance of `de.crysxd.cameraXTracker.CameraFragment` to your layout:
+Add a instance of `cz.rusakov.cameraXCompleteTracker.CameraFragment` to your layout:
 
     <fragment
             android:id="@+id/cameraFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:name="de.crysxd.cameraXTracker.CameraFragment"/>
+            android:name="cz.rusakov.cameraXCompleteTracker.CameraFragment"/>
             
 `CameraFragment` will handle the entire camera for you and display a preview image. In your `Activity` or `Fragment` use this code to set eveything up:
 
@@ -94,7 +94,7 @@ Use `FrontFacingCameraFragment` instead:
             android:id="@+id/cameraFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:name="de.crysxd.cameraXTracker.CameraFragment"/>
+            android:name="cz.rusakov.cameraXCompleteTracker.CameraFragment"/>
             
 Tell PositionTranslator that we use the front facing camera:
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.crysxd.cameraXTracker
+package cz.rusakov.cameraXCompleteTracker
 
 import android.content.Context
 import android.graphics.Matrix

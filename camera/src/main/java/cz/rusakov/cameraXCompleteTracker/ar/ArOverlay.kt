@@ -1,4 +1,4 @@
-package de.crysxd.cameraXTracker.ar
+package cz.rusakov.cameraXCompleteTracker.ar
 
 import android.graphics.Canvas
 

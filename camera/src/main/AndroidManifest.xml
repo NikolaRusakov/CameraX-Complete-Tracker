@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="de.crysxd.cameraXTracker">
+          package="cz.rusakov.cameraXCompleteTracker">
 
     <uses-permission android:name="android.permission.CAMERA" />
 

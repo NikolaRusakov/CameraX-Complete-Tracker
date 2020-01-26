@@ -1,4 +1,4 @@
-package de.crysxd.cameraXTracker
+package cz.rusakov.cameraXCompleteTracker
 
 import android.app.AlertDialog
 import android.os.Bundle
@@ -12,7 +12,7 @@ import androidx.camera.core.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import de.crysxd.cameraXTracker.ar.ArOverlayView
+import cz.rusakov.cameraXCompleteTracker.ar.ArOverlayView
 import kotlinx.android.synthetic.main.fragment_camera.*
 import timber.log.Timber
 import java.io.File
@@ -34,6 +34,7 @@ open class CameraFragment : Fragment() {
 
     var flashMode: FlashMode? = null
     var imageCapture: ImageCapture? = null
+    var imageCapturedListener: ImageCapture.OnImageSavedListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -77,11 +78,6 @@ open class CameraFragment : Fragment() {
                 val previewConfig = onCreatePreviewConfigBuilder().build()
                 usesCases.add(AutoFitPreviewBuilder.build(previewConfig, preview))
 
-                val imageCaptureConfig = onCreateImageCaptureConfigBuilder().build()
-                val fileName = System.currentTimeMillis().toString()
-                val fileFormat = ".jpg"
-                val imageFile = createTempFile(fileName, fileFormat)
-
                 // Setup image analysis pipeline that computes average pixel luminance in real time
                 if (imageAnalyzer != null) {
                     val analyzerConfig = onCreateAnalyzerConfigBuilder().build()
@@ -90,9 +86,14 @@ open class CameraFragment : Fragment() {
                     })
                 }
 
+                val imageCaptureConfig = onCreateImageCaptureConfigBuilder().build()
+                val fileName = System.currentTimeMillis().toString()
+                val fileFormat = ".jpg"
+                val imageFile = createTempFile(fileName, fileFormat)
+
                 usesCases.add(usesCases.size - 1,
                     ImageCapture(imageCaptureConfig).apply {
-                        takePicture(imageFile, object : ImageCapture.OnImageSavedListener {
+                        takePicture(imageFile, imageCapturedListener ?: object : ImageCapture.OnImageSavedListener {
                             override fun onImageSaved(file: File) {
                                 // You may display the image for example using its path file.absolutePath
                             }

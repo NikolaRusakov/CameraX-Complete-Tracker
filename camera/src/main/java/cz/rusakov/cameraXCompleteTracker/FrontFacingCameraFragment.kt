@@ -1,4 +1,4 @@
-package de.crysxd.cameraXTracker
+package cz.rusakov.cameraXCompleteTracker
 
 import androidx.camera.core.CameraX
 import androidx.camera.core.ImageAnalysisConfig

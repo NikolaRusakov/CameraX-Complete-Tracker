@@ -1,4 +1,4 @@
-package de.crysxd.cameraXTracker.ar
+package cz.rusakov.cameraXCompleteTracker.ar
 
 import android.content.Context
 import android.graphics.Canvas
@@ -6,8 +6,8 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import androidx.annotation.ColorInt
-import de.crysxd.cameraXTracker.BuildConfig
-import de.crysxd.cameraXTracker.R
+import cz.rusakov.cameraXCompleteTracker.BuildConfig
+import cz.rusakov.cameraXCompleteTracker.R
 
 
 class BoundingBoxArOverlay(private val context: Context, private val debugMode: Boolean = false) : ArOverlay(), ArObjectTracker.ArObjectTrackingListener {

@@ -1,4 +1,4 @@
-package de.crysxd.cameraXTracker;
+package cz.rusakov.cameraXCompleteTracker;
 
 import org.junit.Test;
 

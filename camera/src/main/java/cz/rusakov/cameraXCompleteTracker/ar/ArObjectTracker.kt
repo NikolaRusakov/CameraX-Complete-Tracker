@@ -1,4 +1,4 @@
-package de.crysxd.cameraXTracker.ar
+package cz.rusakov.cameraXCompleteTracker.ar
 
 open class ArObjectTracker() {
 
