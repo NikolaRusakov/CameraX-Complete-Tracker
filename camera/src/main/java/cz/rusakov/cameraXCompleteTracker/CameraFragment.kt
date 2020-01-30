@@ -90,10 +90,10 @@ open class CameraFragment : Fragment() {
                 val fileName = System.currentTimeMillis().toString()
                 val fileFormat = ".jpg"
                 val imageFile = createTempFile(fileName, fileFormat)
-
-                usesCases.add(usesCases.size - 1,
-                    ImageCapture(imageCaptureConfig).apply {
-                        takePicture(imageFile, imageCapturedListener ?: object : ImageCapture.OnImageSavedListener {
+                imageCapture = ImageCapture(imageCaptureConfig).apply {
+                    takePicture(
+                        imageFile,
+                        imageCapturedListener ?: object : ImageCapture.OnImageSavedListener {
                             override fun onImageSaved(file: File) {
                                 // You may display the image for example using its path file.absolutePath
                             }
@@ -106,7 +106,11 @@ open class CameraFragment : Fragment() {
                                 // Display error message
                             }
                         })
-                    })
+                }
+
+                usesCases.add(
+                    usesCases.size - 1, imageCapture!!
+                )
 
                 // Bind use cases to lifecycle
                 CameraX.bindToLifecycle(this, *usesCases.toTypedArray())
