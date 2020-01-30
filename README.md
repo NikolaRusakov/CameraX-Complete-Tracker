@@ -1,3 +1,6 @@
+Big thanks go to [Christian Würthner
+](https://github.com/crysxd) for the [library CameraX-Object-Tracking](https://github.com/crysxd/CameraX-Object-Tracking)
+
 # About
 A small library allowing you to analyze images and track objects on interpolated paths.
 
